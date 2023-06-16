@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,53 +7,41 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace group_project_recipe_management {
-  public class Recipe {
-    public string RecipeName { get; set; }
+  public class Recipe : IEnumerable<Ingredient> {
+    public string Name { get; set; }
     public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
     public string Description { get; set; }
 
     public Recipe() { }
 
     public Recipe(string recipeName, List<Ingredient> ingredients, string description) {
-      RecipeName = recipeName;
+      Name = recipeName;
       Ingredients = ingredients;
       Description = description;
     }
 
-    public static List<Recipe> ReadRecipes() {
-      List<Recipe> RecipesList = new List<Recipe>();
+    public IEnumerator<Ingredient> GetEnumerator() {
+      for (int IngredientCurrent = 0; IngredientCurrent < Ingredients.Count; ++IngredientCurrent) {
+        yield return Ingredients[IngredientCurrent];
+      }
+    }
 
-      StreamReader SR = new StreamReader(@"C:\Users\Егор\source\repos\group-project-recipe-management\recipe\recipes.txt");
+    IEnumerator IEnumerable.GetEnumerator() {
+      return GetEnumerator();
+    }
 
-      string RecipeString;
-      for (int RecipeNumber = 0; (RecipeString = SR.ReadLine()) != null; ++RecipeNumber) {
-        Recipe RecipeSingle = new Recipe();
+    public override string ToString() {
+      string RecipeStr = string.Empty;
 
-        RecipeSingle.RecipeName = RecipeString.Split('~')[0].Replace("[", "").Replace("]", "");
+      RecipeStr += $"{Name}: \n";
 
-        string[] RecipeIngredients = RecipeString
-          .Split('~')[1]
-          .Replace("[", "")
-          .Replace("]", "")
-          .Split(',');
-
-        for (int IngredientNumber = 0; IngredientNumber < RecipeIngredients.Length; ++IngredientNumber) {
-          Ingredient IngredientSingle = new Ingredient();
-
-          IngredientSingle.Name = RecipeIngredients[IngredientNumber].Split('-')[0];
-          IngredientSingle.Weight = RecipeIngredients[IngredientNumber].Split('-')[1];
-
-          RecipeSingle.Ingredients.Add(IngredientSingle);
-        }
-
-        RecipeSingle.Description = RecipeString.Split('~')[2].Replace("[", "").Replace("]", "");
-
-        RecipesList.Add(RecipeSingle);
+      foreach (var Ingredient in Ingredients) {
+        RecipeStr += $" - {Ingredient}\n";
       }
 
-      SR.Close();
+      RecipeStr += Description;
 
-      return RecipesList;
+      return RecipeStr;
     }
   }
 }
