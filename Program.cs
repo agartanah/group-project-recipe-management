@@ -40,7 +40,11 @@ namespace group_project_recipe_management {
         "Рис 1кг"
       };
 
-      Controller.CreateRecipe(Name, Ingredients, Description);
+      foreach (var Recipe in Controller.RecipesObj) {
+
+      }
+
+      Console.WriteLine(Controller.DeleteRecipe(Controller.RecipesObj.RecipesList[Controller.RecipesObj.RecipesList.Count - 1]));
 
       Console.WriteLine(Controller.RecipesObj);
 
