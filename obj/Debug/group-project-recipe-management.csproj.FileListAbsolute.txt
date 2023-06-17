@@ -1,0 +1,8 @@
+C:\Users\vyati\Source\Repos\group-project-recipe-management\bin\Debug\group-project-recipe-management.exe.config
+C:\Users\vyati\Source\Repos\group-project-recipe-management\bin\Debug\group-project-recipe-management.exe
+C:\Users\vyati\Source\Repos\group-project-recipe-management\bin\Debug\group-project-recipe-management.pdb
+C:\Users\vyati\Source\Repos\group-project-recipe-management\obj\Debug\group-project-recipe-management.csproj.AssemblyReference.cache
+C:\Users\vyati\Source\Repos\group-project-recipe-management\obj\Debug\group-project-recipe-management.csproj.SuggestedBindingRedirects.cache
+C:\Users\vyati\Source\Repos\group-project-recipe-management\obj\Debug\group-project-recipe-management.csproj.CoreCompileInputs.cache
+C:\Users\vyati\Source\Repos\group-project-recipe-management\obj\Debug\group-project-recipe-management.exe
+C:\Users\vyati\Source\Repos\group-project-recipe-management\obj\Debug\group-project-recipe-management.pdb
