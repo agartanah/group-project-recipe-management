@@ -7,8 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace group_project_recipe_management {
-  public class Recipes : IEnumerable<Recipe> {
+  interface IRecipes {
+    void Attach(IObserver observer);
+    void Detach(IObserver observer);
+    string Notify(string ProductName);
+  }
+
+  public class Recipes : IEnumerable<Recipe>, IRecipes {
     public List<Recipe> RecipesList { get; set; } = new List<Recipe>();
+    private IObserver observer;
 
     public Recipes() {
       RecipesList = ReadRecipes();
@@ -58,6 +65,18 @@ namespace group_project_recipe_management {
       }
     }
 
+    public void Attach(IObserver Observer) {
+      observer = Observer;
+    }
+
+    public void Detach(IObserver Observer) {
+      observer = Observer;
+    }
+
+    public string Notify(string RecipeName) {
+      return observer.Update(RecipeName);
+    }
+
     public override string ToString() {
       string RecipesStr = string.Empty;
 
@@ -68,20 +87,7 @@ namespace group_project_recipe_management {
       return RecipesStr;
     }
 
-    public bool CreateRecipe(string NameRecipe, List<string> Ingredients, string DescriptionRecipe) {
-      Recipe RecipeObj = new Recipe {
-        Name = NameRecipe,
-        Description = DescriptionRecipe,
-        Ingredients = new List<Ingredient>()
-      };
-      
-      foreach (var Ingredient in Ingredients) {
-        string NameIngredient = Ingredient.Split(' ')[0];
-        string WeigthIngredient = Ingredient.Split(' ')[1];
-
-        RecipeObj.CreateIngredient(NameIngredient, WeigthIngredient);
-      }
-
+    public bool CreateRecipe(Recipe RecipeObj) {
       RecipesList.Add(RecipeObj);
       SaveRecipes();
 
