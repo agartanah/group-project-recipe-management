@@ -17,13 +17,13 @@ namespace group_project_recipe_management {
     public List<Recipe> ReadRecipes() {
       List<Recipe> RecipesList = new List<Recipe>();
 
-      StreamReader SR = new StreamReader(@"recipes.txt");
+      string[] RecipesString = File.ReadAllText(@"recipes.txt").Split('&');
 
-      string RecipeString;
-      for (int RecipeNumber = 0; (RecipeString = SR.ReadLine()) != null; ++RecipeNumber) {
+      for (int RecipeNumber = 0; RecipeNumber < RecipesString.Length - 1; ++RecipeNumber) {
         Recipe RecipeSingle = new Recipe();
+        string RecipeString = RecipesString[RecipeNumber];
 
-        RecipeSingle.Name = RecipeString.Split('~')[0].Replace("[", "").Replace("]", "");
+        RecipeSingle.Name = RecipeString.Split('~')[0].Replace("[", "").Replace("]", "").Replace("\n", "");
 
         string[] RecipeIngredients = RecipeString
           .Split('~')[1]
@@ -44,8 +44,6 @@ namespace group_project_recipe_management {
 
         RecipesList.Add(RecipeSingle);
       }
-
-      SR.Close();
 
       return RecipesList;
     }
@@ -68,6 +66,48 @@ namespace group_project_recipe_management {
       }
 
       return RecipesStr;
+    }
+
+    public bool CreateRecipe(string NameRecipe, List<string> Ingredients, string DescriptionRecipe) {
+      Recipe RecipeObj = new Recipe {
+        Name = NameRecipe,
+        Description = DescriptionRecipe,
+        Ingredients = new List<Ingredient>()
+      };
+      
+      foreach (var Ingredient in Ingredients) {
+        string NameIngredient = Ingredient.Split(' ')[0];
+        string WeigthIngredient = Ingredient.Split(' ')[1];
+
+        RecipeObj.CreateIngredient(NameIngredient, WeigthIngredient);
+      }
+
+      RecipesList.Add(RecipeObj);
+      SaveRecipes();
+
+      return true;
+    }
+
+    private bool SaveRecipes() {
+      string RecipesSave = string.Empty;
+
+      foreach (var Recipe in this) {
+        RecipesSave += Recipe.ToString() + "\n";
+      }
+
+      File.WriteAllText(@"recipes.txt", RecipesSave);
+
+      return true;
+    }
+
+    public bool DeleteRecipe(Recipe RecipeObj) {
+      if (RecipesList.Remove(RecipeObj)) {
+        SaveRecipes();
+
+        return true;
+      }
+      
+      return false;
     }
 
     public Recipes Search(string WordSearch) {

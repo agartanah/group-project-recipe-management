@@ -17,7 +17,7 @@ namespace group_project_recipe_management {
     }
 
     public override string ToString() {
-      return Name + " " + Weight;
+      return Name + "-" + Weight;
     }
   }
 }

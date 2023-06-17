@@ -33,15 +33,36 @@ namespace group_project_recipe_management {
     public override string ToString() {
       string RecipeStr = string.Empty;
 
-      RecipeStr += $"{Name}: \n";
+      RecipeStr += $"[{Name}]~[";
 
       foreach (var Ingredient in Ingredients) {
-        RecipeStr += $" - {Ingredient}\n";
+        RecipeStr += $"{Ingredient},";
       }
 
-      RecipeStr += Description;
+      RecipeStr = RecipeStr.Remove(RecipeStr.Length - 1, 1);
+
+      RecipeStr += $"]~[{Description}]&";
 
       return RecipeStr;
+    }
+
+    public bool CreateIngredient(string NameIngredient, string WeightIngredient) {
+      Ingredient IngredientCreate = new Ingredient(NameIngredient, WeightIngredient);
+
+      Ingredients.Add(IngredientCreate);
+
+      return true;
+    }
+
+    public bool DeleteIngredient(string NameIngredient, string WeightIngredient) {
+      foreach (var IngredientObj in Ingredients) {
+        if (IngredientObj.Name == NameIngredient && IngredientObj.Weight == WeightIngredient) {
+          Ingredients.Remove(IngredientObj);
+          return true;
+        }
+      }
+
+      return false;
     }
   }
 }
